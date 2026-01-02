@@ -1,5 +1,1 @@
 streamlit
-snowflake-snowpark-python
-snowflake-ml-python
-pypdf
-numpy
