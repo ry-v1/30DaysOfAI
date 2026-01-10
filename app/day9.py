@@ -60,3 +60,7 @@ with col2:
     # 3. Read: Display the value
     st.metric("State Count", st.session_state.counter)
     st.caption("This works because we only set the counter to 0 if it doesn't exist.")
+
+# Footer
+st.divider()
+st.caption("Day 9: Understanding Session State | 30 Days of AI")
