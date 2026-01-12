@@ -50,38 +50,18 @@ if prompt := st.chat_input("What would you like to know?"):
 
 ```python
     with st.chat_message("assistant"):
-        response = call_llm(st.session_state.messages)
+        response = call_llm(prompt)
         st.write(response)
     
     st.session_state.messages.append({"role": "assistant", "content": response})
 ```
 
-* **`call_llm(st.session_state.messages)`**: Calls Snowflake Cortex with the **full conversation history**, not just the current prompt. This allows the LLM to understand context and reference previous messages.
+* **`call_llm(...)`**: Calls Snowflake Cortex using the `ai_complete()` function to generate a response.
 * **Second `.append(...)`**: Stores the assistant's response in the same format, completing the conversation turn.
-
-**How Conversation History Works:**
-
-The `call_llm()` function formats all previous messages into a conversation context:
-```python
-def call_llm(messages: list) -> str:
-    """Call Snowflake Cortex LLM with conversation history."""
-    conversation = ""
-    for msg in messages:
-        role = "User" if msg["role"] == "user" else "Assistant"
-        conversation += f"{role}: {msg['content']}\n\n"
-    
-    conversation += "Assistant:"
-    # Send to LLM...
-```
-
-This way, the LLM sees the entire conversation and can:
-- Answer follow-up questions
-- Reference previous topics
-- Maintain context across turns
 
 > :material/lightbulb: **Why SQL-based `ai_complete()`?** We use the SQL-based `ai_complete()` function instead of the Python `Complete()` API because it works universally across all deployment environments (Streamlit in Snowflake, Community Cloud, and local). The Python SDK can have SSL certificate issues in external environments, while the SQL approach is reliable everywhere.
 
-When this code runs, you will have a chatbot where messages persist across interactions, building a visible conversation history **and the LLM remembers the context**!
+When this code runs, you will have a chatbot where messages persist across interactions, building a visible conversation history.
 
 ---
 
